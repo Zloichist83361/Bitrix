@@ -1,5 +1,6 @@
 from bitrix24 import *
 import logging
+import sys
 
 logger = logging.getLogger('CREAT_PRODUCT')
 logger.setLevel(logging.DEBUG)
@@ -10,10 +11,24 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 products = []
-with open('test.csv', encoding='utf-8') as f:
-    for line in f:
-        product = line.split(';')
-        products.append(product)
+
+delimiter = ';'
+try:
+    with open('te1.csv', encoding='utf-8') as f:
+        for line in f:
+            product = line.split(delimiter)
+            products.append(product)
+except Exception as e:
+    logger.error(f'{e}')
+    sys.exit('Stop')
+
+if len(products) < 2:
+    logger.info('No correct list')
+    sys.exit('Stop')
+
+if len(products[0]) == 13:
+    logger.error('No correct size product')
+    sys.exit('Stop')
 
 del products[0]
 

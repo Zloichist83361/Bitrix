@@ -16,25 +16,25 @@ host ='185.63.60.36'
 username ='anonymous'
 password =''
 port = '8888'
+file = '100-0319.zip'
 
 try:
     ftp_host = ftputil.FTPHost(host, username, password, port)
-    logger.debug(f'Connect to FTP {host} ')
+    logger.debug(f'Connect to FTP {host}')
     ftp_host.use_list_a_option = False
     with ftp_host:
         list = ftp_host.listdir(ftp_host.curdir)
-        logger.debug(f'Get file list {list}')
+        list_file = ''
         for fname in list:
-            if not ('100-0319.zip') in fname:
-                logger.error('Not file')
-            else:
-                fname = '100-0139.zip'
+            list_file += '\t\t'+ fname + '\n'
+        logger.debug(f'Get file list \n {list_file}')
+        for fname in list:
+            if file == fname:
                 logger.debug(f'File download {fname}')
                 ftp_host.download(fname, 'ftp/' + fname)
                 logger.info(f'Download successfully {fname}')
-except Exception:
-    logging.error('Error server')
+            else:
+                logger.error('Unnecessary file')
+except Exception as e:
+    logger.error(f'{e}')
     raise
-
-
-
